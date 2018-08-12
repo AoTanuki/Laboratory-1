@@ -1,0 +1,24 @@
+Contexto:
+-Una empresa de fabricación de microprocesadores desea implementar tres algoritmos de ordenamientos como una operación nativa de su próximo coprocesador. 
+-Sus anteriores lineas de coprocesadores no implementaban o no soportaban varios algoritmos de ordenamiento.
+-los algoritmos deben permitir ordenar muy rapidamente.
+-Los algoritmos deben ordenar números enteros arbitrariamente grandes.
+-los algoritmos deben ordenar números de coma flotante de cualquier tamaño.
+-La empresa desea un software para probar los algoritmos qué serán implementados en el hardware.
+-No disponen de un software que permita evaluar la eficiencia y eficacia de los algoritmos en el hardware
+-La empresa desea poder ingresar los valores que desean ordenar.
+-La empresa desea que el programa genere aleatoriamente los valores.
+-La empresa desea tener control sobre la  cantidad total de valores generados y el intervalo en el cuál se generarán los mismos.
+-La empresa, además, requiere poder elegir entre números repetidos o ausencia de los mismos en los números generados.
+-La generación aleatoria debe permitir elegir entre unas configuraciones de los valores en la secuencia.
+-La empresa requiere que el software ordene los valores ingresados utilizando el algoritmo apropiado deacuerdo con el tipo de número a ordenar y el intervalo de números generados.
+-Finalmente, La empresa requiere que la interfaz gráfica muestre el tiempo que se demoró el algoritmo en ordenar las entradas.
+
+Definición del problema:
+Una empresa que fabrica microprocesadores desea incluir en su próximo coprocesador la funcionalidad de ordenar entradas numericas grandes, ya sean enteros o de coma flotante. Para esto, requieren incluir tres algoritmos de ordenamiento en el hardware que tengan un buen rendimiento dependiendo el tipo de número y la mágnitud de números de la entrada. Además, Desean un software que permita evaluar estos algoritmos en el hardware. Así, la empresa requiere que el software lea y genere entradas númericas enteras y de coma flotante. Para el caso de la generación, el software, precisa brindar control sobre el número total de datos, el intervalo de generación, existencia de números repetidos y elección entre posibles configuraciones  de los valores en la secuencia.
+
+Requerimientos:
+-La interfaz gráfica debe permitir ingresar los valores que se desean ordenar
+-La interfaz gráfica debe permitir generar aleatoriamente los valores (tanto enteros como de coma flotante)
+-La interfaz gráfica debe permitir configurar la cantidad total de números a generar
+-La interfaz gráfica debe permitir configurar el intervalo en el cuál se generarán los números.
