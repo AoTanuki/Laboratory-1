@@ -44,3 +44,4 @@ Funcion arr <- pigeonHoleSort ( arr, n )
 	
 Fin Funcion
 
+adaptado de: https://www.geeksforgeeks.org/pigeonhole-sort/
