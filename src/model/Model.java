@@ -76,15 +76,15 @@ public class Model {
 
 
     /**
-     * this method read the numbers within file and, depend of numbertype, chooses which converter uses
+     * this method read the numbers within file and, depend of number type, chooses which converter uses
      * finally, set the correct list with that numbers.
      * 
      * @param file is the file that contain the set of number to sort 
      * @param numberType defines what kind of number are within file
-     * @throws FileWithNotNumbersSet 
-     * @throws FileWithNoSetSizeException 
-     * @throws IOException 
-     * @throws NumberFormatException 
+     * @throws FileWithNotNumbersSet throws when the file has not lines with numbers to setting
+     * @throws FileWithNoSetSizeException throws when the file has not a line specifying set's size
+     * @throws IOException throws when a problem reading line appears
+     * @throws NumberFormatException throws when is not possible to convert a String to a float
      */
     public void readNumbersFile(File file, char numberType) throws NumberFormatException, IOException, FileWithNoSetSizeException, FileWithNotNumbersSet {
         
@@ -102,12 +102,13 @@ public class Model {
     }
 
     /**
-     * @param buffer 
-     * @return
-     * @throws IOException 
-     * @throws NumberFormatException 
-     * @throws FileWithNoSetSizeException 
-     * @throws FileWithNotNumbersSet 
+     * this method converts the file in a float set.
+     * @param buffer is the buffer that allow the method to read every line
+     * @return auxiliarList is the float set with every float within file
+     * @throws IOException  throws when a problem reading line appears
+     * @throws NumberFormatException throws when is not possible to convert a String to a float
+     * @throws FileWithNoSetSizeException throws when the file has not a line specifying set's size
+     * @throws FileWithNotNumbersSet  throws when the file has not lines with numbers to setting
      */
     public float[] convertFileToFloatList(BufferedReader buffer) throws NumberFormatException, IOException, FileWithNoSetSizeException, FileWithNotNumbersSet {
        
@@ -122,7 +123,7 @@ public class Model {
     	
     	String line = buffer.readLine();
     	
-    	if(line== null) {
+    	if(line== null || line.isEmpty()) {
     		throw new FileWithNotNumbersSet();
     	}
     	
