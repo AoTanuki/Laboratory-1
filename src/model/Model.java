@@ -149,12 +149,50 @@ public class Model {
     }
 
     /**
-     * @param buffer 
-     * @return
+     *this method converts the file in a integer set.
+     * @param buffer is the buffer that allow the method to read every line
+     * @return auxiliarList is the float set with every float within file
+     * @throws IOException  throws when a problem reading line appears
+     * @throws NumberFormatException throws when is not possible to convert a String to a float
+     * @throws FileWithNoSetSizeException throws when the file has not a line specifying set's size
+     * @throws FileWithNotNumbersSet  throws when the file has not lines with numbers to setting
      */
-    public int[] convertFileToIntegerList(BufferedReader buffer) {
-        // TODO implement here
-        return null;
+    public int[] convertFileToIntegerList(BufferedReader buffer) throws IOException, FileWithNoSetSizeException, FileWithNotNumbersSet {
+    	
+    	int[] auxiliarList = null;
+    	if(!buffer.readLine().equalsIgnoreCase("#set's size"))
+        {
+    		throw new FileWithNoSetSizeException();
+        }
+        	
+    	int size = Integer.parseInt(buffer.readLine());
+    	auxiliarList = new int[size];
+    	
+    	String line = buffer.readLine();
+    	
+    	if(line== null || line.isEmpty()) {
+    		throw new FileWithNotNumbersSet();
+    	}
+    	
+    	int numberline = 4;
+    	while(line!= null && !line.isEmpty())
+    	{
+    		line = line.trim();
+    		String[] lineList = line.split("-");
+    		
+    		for (int i = 0; i < lineList.length; i++) {
+    			try {
+				auxiliarList[i] = Integer.parseInt(lineList[i]);
+    			}catch (NumberFormatException e)
+    			{
+    				throw new NumberFormatException("There is a problem in your file, some value was not good write "+"\n the number is: "+ lineList[i]+ " in the line: "+numberline);
+    			}
+			}
+    		numberline++;
+    		line = buffer.readLine();
+    	}
+        
+        return auxiliarList;
     }
 
     /**
@@ -305,4 +343,45 @@ public class Model {
         return null;
     }
 
+
+	public float[] getFloatList() {
+		return floatList;
+	}
+
+
+	public void setFloatList(float[] floatList) {
+		this.floatList = floatList;
+	}
+
+
+	public float[] getFloatSortedist() {
+		return floatSortedist;
+	}
+
+
+	public void setFloatSortedist(float[] floatSortedist) {
+		this.floatSortedist = floatSortedist;
+	}
+
+
+	public int[] getIntegerList() {
+		return integerList;
+	}
+
+
+	public void setIntegerList(int[] integerList) {
+		this.integerList = integerList;
+	}
+
+
+	public int[] getIntegerSortedist() {
+		return integerSortedist;
+	}
+
+
+	public void setIntegerSortedist(int[] integerSortedist) {
+		this.integerSortedist = integerSortedist;
+	}
+
+    
 }
