@@ -21,13 +21,13 @@ public class OptionPanel extends JPanel implements ActionListener{
 	
 	private JButton openFile;
 	private JButton generateFiles;
-	private MeanInterfaz interfaz;
+	private MainInterfaz interfaz;
 	
 	
 	
 	
 	
-	public OptionPanel(MeanInterfaz inter)
+	public OptionPanel(MainInterfaz inter)
 	{
 		openFile= new JButton("Open Elements from Folder");
 		openFile.setActionCommand(OPENFILE);

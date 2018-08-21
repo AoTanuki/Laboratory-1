@@ -36,9 +36,9 @@ public class GenrateOptions extends JFrame implements ActionListener {
 	private JButton Acept;
 	private JLabel size;
 	private JTextField numbers;
-	private MeanInterfaz inter;
+	private MainInterfaz inter;
 
-	public GenrateOptions(MeanInterfaz in) {
+	public GenrateOptions(MainInterfaz in) {
 
 		inter = in;
 

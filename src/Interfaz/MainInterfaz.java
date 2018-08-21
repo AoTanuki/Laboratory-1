@@ -6,11 +6,11 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class MeanInterfaz extends JFrame {
+public class MainInterfaz extends JFrame {
 
 	private OptionPanel options;
 
-	public MeanInterfaz() {
+	public MainInterfaz() {
 		setTitle("Lab1 MiguelRomero y Jonathan Arenas");
 
 		options = new OptionPanel(this);
@@ -62,7 +62,7 @@ public class MeanInterfaz extends JFrame {
 	
 
 	public static void main(String[] arg) {
-		MeanInterfaz All = new MeanInterfaz();
+		MainInterfaz All = new MainInterfaz();
 		All.setVisible(true);
 	}
 
