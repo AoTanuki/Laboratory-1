@@ -9,6 +9,7 @@ import java.util.*;
 
 /**
  * @author Danfee
+ * @author Mike
  */
 public class Model {
 
@@ -569,8 +570,37 @@ public class Model {
 	 * @return
 	 */
 	public void pigeonHoleSort(int[] list) {
-		// TODO implement here
+		
+		//find the minimum and the maximums valor
+		int minimun = list[0];
+		int maximun = list[0];
+		
+		for (int i = 0; i < list.length; i++) {
+			if(list[i]>maximun)
+				maximun = list[i];
+			if(list[i]<minimun)
+				minimun = list[i];
+		}
 
+		//find the range of holes
+		int range = maximun -minimun +1;
+		
+		int[] pigeonHoles = new int[range];
+		
+		//put every element in its respective hole
+		for (int i = 0; i < pigeonHoles.length; i++) {
+			pigeonHoles[list[i]-minimun]++;
+		}
+		
+		int index =0;
+		
+		//for every hole, take its elements and put in array
+		for (int i = 0; i < range; i++) {
+			while(pigeonHoles[i]-->0)
+			{
+				list[index++] =i+minimun;
+			}
+		}
 	}
 
 	/**
@@ -579,7 +609,60 @@ public class Model {
 	 */
 	public void radixSort(float[] list) {
 		// TODO implement here
+		
+		float maximus = getMax(list);
+		
+		int bitMaximus = Float.floatToIntBits(maximus);
+		
+		for (int exp = 1; bitMaximus/exp > 0; exp*=10) {
+			
+			countSort(list,exp);
+		}
+	}
+	
+	private void countSort(float[] list, int exp) {
+		
+		int[] outPut = new int[list.length];
+		int[] count = new int[10];
+		
+		
+		for (int i = 0; i < list.length; i++) {
+			int bitRepre = Float.floatToIntBits(list[i]);
+			count[(bitRepre/exp)%10]++;
+		}
+		
+		for (int i = 1; i < count.length; i++) {
+			count[i]+= count[i-1];
+		}
+		
+		
+		for (int i = list.length-1; i >= 0; i--) {
+			
+			int bitRepre = Float.floatToIntBits(list[i]);
+			outPut[count[(bitRepre/exp)%10]-1] = bitRepre;
+			count[(bitRepre/exp)%10]--;
+		}
+		
+		for (int i = 0; i < list.length; i++) {
+			list[i] = Float.intBitsToFloat(outPut[i]);
+		}
+		
+	}
 
+	public float getMax(float[] list)
+	{
+		int bitMax = Float.floatToIntBits(list[0]);
+		
+		for (int i = 0; i < list.length; i++) {
+			int bitTemp = Float.floatToIntBits(list[i]);
+			
+			if(bitTemp>bitMax)
+				bitMax = bitTemp;
+		}
+		
+		float maximun = Float.intBitsToFloat(bitMax);
+		
+		return maximun;
 	}
 
 	public float[] getFloatList() {
