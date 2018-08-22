@@ -608,7 +608,6 @@ public class Model {
 	 * @return
 	 */
 	public void radixSort(float[] list) {
-		// TODO implement here
 		
 		float maximus = getMax(list);
 		
