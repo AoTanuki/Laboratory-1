@@ -483,18 +483,18 @@ public class Model {
 	 * @param list
 	 * @return
 	 */
-	public int[] pigeonHoleSort(int[] list) {
+	public void pigeonHoleSort(int[] list) {
 		// TODO implement here
-		return null;
+		
 	}
 
 	/**
 	 * @param list
 	 * @return
 	 */
-	public float[] radixSort(float[] list) {
+	public void radixSort(float[] list) {
 		// TODO implement here
-		return null;
+		
 	}
 
 	public float[] getFloatList() {
