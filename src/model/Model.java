@@ -1,9 +1,11 @@
 package model;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
@@ -26,7 +28,7 @@ public class Model {
 	/**
 	 * 
 	 */
-	public static final String MERGE_SORT = "Merge Sort";
+	public static final String RADIX = "Radix Sort";
 
 	/**
 	 * 
@@ -138,7 +140,9 @@ public class Model {
 		if (!buffer.readLine().equalsIgnoreCase("#set's size")) {
 			throw new FileWithNoSetSizeException();
 		}
-
+		
+		
+		
 		int size = Integer.parseInt(buffer.readLine());
 		auxiliarList = new float[size];
 
@@ -148,23 +152,29 @@ public class Model {
 			throw new FileWithNotNumbersSet();
 		}
 
-		int numberline = 4;
+		int numberline = 3;
 		while (line != null && !line.isEmpty()) {
-			line = line.trim();
-			String[] lineList = line.split("-");
 
-			for (int i = 0; i < lineList.length; i++) {
-				try {
-					auxiliarList[i] = Float.parseFloat(lineList[i]);
-				} catch (NumberFormatException e) {
-					throw new NumberFormatException("There is a problem in your file, some value was not good write "
-							+ "\n the number is: " + lineList[i] + " in the line: " + numberline);
+			if (!line.startsWith("#")) {
+				line = line.trim();
+				String[] lineList = line.split(" ");
+
+				for (int i = 0; i < lineList.length; i++) {
+					try {
+						auxiliarList[i] = Float.parseFloat(lineList[i]);
+					} catch (NumberFormatException e) {
+						throw new NumberFormatException(
+								"There is a problem in your file, some value was not good write " + "\n the number is: "
+										+ lineList[i] + " in the line: " + numberline);
+					}
 				}
 			}
+
 			numberline++;
 			line = buffer.readLine();
 		}
 
+		buffer.close();
 		return auxiliarList;
 	}
 
@@ -198,25 +208,35 @@ public class Model {
 			throw new FileWithNotNumbersSet();
 		}
 
-		int numberline = 4;
+		int numberline = 3;
 		while (line != null && !line.isEmpty()) {
-			line = line.trim();
-			String[] lineList = line.split("-");
 
-			for (int i = 0; i < lineList.length; i++) {
-				try {
-					auxiliarList[i] = Integer.parseInt(lineList[i]);
-				} catch (NumberFormatException e) {
-					throw new NumberFormatException("There is a problem in your file, some value was not good write "
-							+ "\n the number is: " + lineList[i] + " in the line: " + numberline);
+			if (!line.startsWith("#")) {
+				line = line.trim();
+				String[] lineList = line.split(" ");
+
+				for (int i = 0; i < lineList.length; i++) {
+					try {
+						auxiliarList[i] = Integer.parseInt(lineList[i]);
+					} catch (NumberFormatException e) {
+						throw new NumberFormatException(
+								"There is a problem in your file, some value was not good write " + "\n the number is: "
+										+ lineList[i] + " in the line: " + numberline);
+					}
 				}
+
 			}
 			numberline++;
 			line = buffer.readLine();
 		}
 
+		
 		return auxiliarList;
 	}
+
+	
+
+	
 
 	/**
 	 * this method decide which algorithm use to generate the random list to sort
@@ -227,9 +247,10 @@ public class Model {
 	 * @param cloneNumber   this parameter define if the list would has numbers
 	 *                      clone
 	 * @param numberType    define which type of number is.
+	 * @throws IOException 
 	 */
 	public void generateElements(int size, int startInterval, int endInterval, char cloneNumber, char generateType,
-			char numberType) {
+			char numberType) throws IOException {
 		Random rand = new Random();
 		Object[] list = null;
 		switch (numberType) {
@@ -251,10 +272,22 @@ public class Model {
 				break;
 			}
 
+			BufferedWriter writter = new BufferedWriter(new FileWriter("./data/numbersets/integersFile.txt"));
+			
+			writter.write("#set's size");
+			writter.newLine();
+			writter.write(list.length + "");
+			writter.newLine();
+			writter.write("#numbers set");
+			writter.newLine();
+			String numberset = "";
 			this.integerList = new int[list.length];
 			for (int i = 0; i < list.length; i++) {
 				this.integerList[i] = (int) list[i];
+				numberset+=integerList[i]+" ";
 			}
+			writter.write(numberset);
+			writter.close();
 
 			break;
 
@@ -275,10 +308,21 @@ public class Model {
 				break;
 			}
 
+			BufferedWriter writter1 = new BufferedWriter(new FileWriter("./data/numbersets/floatsFile.txt"));
+			writter1.write("#set's size");
+			writter1.newLine();
+			writter1.write(list.length + "");
+			writter1.newLine();
+			writter1.write("#numbers set");
+			writter1.newLine();
+			String numberset1 = "";
 			this.floatList = new float[list.length];
 			for (int i = 0; i < list.length; i++) {
 				this.floatList[i] = (float) list[i];
+				numberset1+=floatList[i]+" ";
 			}
+			writter1.write(numberset1);
+			writter1.close();
 
 			break;
 		}
@@ -286,7 +330,8 @@ public class Model {
 	}
 
 	/**
-	 * this method decide which algorithm use to generate the random list to sort but in a segment way
+	 * this method decide which algorithm use to generate the random list to sort
+	 * but in a segment way
 	 * 
 	 * @param size             is the length of the list
 	 * @param startInterval    define the interval's start of numbers what user want
@@ -294,7 +339,8 @@ public class Model {
 	 * @param cloneNumber      this parameter define if the list would has numbers
 	 *                         clone
 	 * @param numberType       define which type of number is.
-	 * @param randomPorcentage is a double that define how much is disordered the list
+	 * @param randomPorcentage is a double that define how much is disordered the
+	 *                         list
 	 */
 	public void generateElements(int size, int startInterval, int endInterval, char cloneNumber, char numberType,
 			double randomPorcentage) {
@@ -497,13 +543,14 @@ public class Model {
 	/**
 	 * 
 	 * 
-	  *@param size          is the length of the list
-	 * @param startInterval define the interval's start of numbers what user want
-	 * @param endInterval   define the interval's end of numbers what user want
-	 * @param cloneNumber   this parameter define if the list would has numbers
-	 *                      clone
-	 * @param numberType    define which type of number is.
-	 * @param randomPorcentage is a double that define how much is disordered the list
+	 * @param size             is the length of the list
+	 * @param startInterval    define the interval's start of numbers what user want
+	 * @param endInterval      define the interval's end of numbers what user want
+	 * @param cloneNumber      this parameter define if the list would has numbers
+	 *                         clone
+	 * @param numberType       define which type of number is.
+	 * @param randomPorcentage is a double that define how much is disordered the
+	 *                         list
 	 * @return list is a object array that provide a list with the numbers in the
 	 *         interval but sorted in a inverted form. This list only has one type
 	 *         of number. it is defined by the parameter "numberType"
@@ -538,67 +585,131 @@ public class Model {
 		return list;
 	}
 
-
-
 	/**
+	 * Modifica la lista correspondiente al tipo de numero de forma ordenada y
+	 * retroalimenta
+	 * 
 	 * @param numbertype
-	 * @return informacion con el runtime, espacio usado, algoritmo empleado.
+	 * @return info devuelve una lista con la informacion de la siguiente forma:
+	 *         [o]:Runtime (long), [1]:algoritmo usado(String)
 	 */
-	public Object sortPerformance(char numbertype) {
-		// TODO implement here
-		return null;
-	}
+	public Object[] sortPerformance(char numbertype) {
 
-	/**
-	 * @param numberType
-	 */
-	public void choiceAlgorithm(char numberType) {
-		// TODO implement here
+		Object[] info = new Object[2];
+
+		long timeStart = 0;
+		long runtime = 0;
+		String algorithm = " ";
+
+		switch (numbertype) {
+		case FLOAT:
+			algorithm = RADIX;
+			floatSortedist = floatList.clone();
+
+			timeStart = System.currentTimeMillis();
+			radixSort(floatSortedist);
+			runtime = System.currentTimeMillis() - timeStart;
+			break;
+
+		case INTEGERS:
+			integerSortedist = integerList.clone();
+			if (integerSortedist.length <= 2500) {
+				algorithm = QUICK_SORT;
+				timeStart = System.currentTimeMillis();
+				quickSort(integerSortedist, integerSortedist.length, 0);
+				runtime = System.currentTimeMillis() - timeStart;
+			} else {
+				algorithm = PIGEONHOLE_SORT;
+				timeStart = System.currentTimeMillis();
+				pigeonHoleSort(integerSortedist);
+				runtime = System.currentTimeMillis() - timeStart;
+			}
+			break;
+		}
+
+		info[0] = runtime;
+		info[1] = algorithm;
+		return info;
 	}
 
 	/**
 	 * @param list
 	 * @return
 	 */
-	public int[] quickSort(int[] list) {
-		// TODO implement here
-		return null;
+	public void quickSort(int[] list, int high, int low) {
+
+		if (low < high) {
+			int partition = partition(list, low, high);
+
+			quickSort(list, low, partition - 1);
+			quickSort(list, partition + 1, high);
+		}
+
 	}
+
+	private int partition(int[] list, int low, int high) {
+
+		int pivot = list[high];
+		int smallerElementIndex = (low - 1);
+
+		for (int i = low; i < high; i++) {
+
+			if (list[i] <= pivot) {
+				smallerElementIndex++;
+
+				// Swap list[samallerElementIndex] and list[i]
+
+				int temp = list[smallerElementIndex];
+				list[smallerElementIndex] = list[i];
+				list[i] = temp;
+			}
+		}
+
+		// swap list[smallerElementIndex+1] and list[high] (or pivot)
+		int temp = list[smallerElementIndex + 1];
+		list[smallerElementIndex + 1] = list[high];
+		list[high] = temp;
+
+		return smallerElementIndex + 1;
+	}
+	
 
 	/**
 	 * @param list
 	 * @return
 	 */
 	public void pigeonHoleSort(int[] list) {
-		
-		//find the minimum and the maximums valor
+
+		// find the minimum and the maximums valor
 		int minimun = list[0];
 		int maximun = list[0];
-		
+
 		for (int i = 0; i < list.length; i++) {
-			if(list[i]>maximun)
+			if (list[i] > maximun)
 				maximun = list[i];
-			if(list[i]<minimun)
+			if (list[i] < minimun)
 				minimun = list[i];
 		}
 
-		//find the range of holes
-		int range = maximun -minimun +1;
-		
+		// find the range of holes
+		int range = maximun - minimun + 1;
+
 		int[] pigeonHoles = new int[range];
+
 		
-		//put every element in its respective hole
-		for (int i = 0; i < pigeonHoles.length; i++) {
-			pigeonHoles[list[i]-minimun]++;
+		// put every element in its respective hole
+		for (int i = 0; i < list.length; i++) {
+			int index = list[i] - minimun;
+			pigeonHoles[index]++;
 		}
-		
-		int index =0;
-		
-		//for every hole, take its elements and put in array
+			
+
+		int index = 0;
+
+		// for every hole, take its elements and put in array
 		for (int i = 0; i < range; i++) {
-			while(pigeonHoles[i]-->0)
-			{
-				list[index++] =i+minimun;
+			while (pigeonHoles[i]-- > 0) {
+				list[index++] = i + minimun;
 			}
 		}
 	}
@@ -608,59 +719,56 @@ public class Model {
 	 * @return
 	 */
 	public void radixSort(float[] list) {
-		
+
 		float maximus = getMax(list);
-		
+
 		int bitMaximus = Float.floatToIntBits(maximus);
-		
-		for (int exp = 1; bitMaximus/exp > 0; exp*=10) {
-			
-			countSort(list,exp);
+
+		for (int exp = 1; bitMaximus / exp > 0; exp *= 10) {
+
+			countSort(list, exp);
 		}
 	}
-	
+
 	private void countSort(float[] list, int exp) {
-		
+
 		int[] outPut = new int[list.length];
 		int[] count = new int[10];
-		
-		
+
 		for (int i = 0; i < list.length; i++) {
 			int bitRepre = Float.floatToIntBits(list[i]);
-			count[(bitRepre/exp)%10]++;
+			count[(bitRepre / exp) % 10]++;
 		}
-		
+
 		for (int i = 1; i < count.length; i++) {
-			count[i]+= count[i-1];
+			count[i] += count[i - 1];
 		}
-		
-		
-		for (int i = list.length-1; i >= 0; i--) {
-			
+
+		for (int i = list.length - 1; i >= 0; i--) {
+
 			int bitRepre = Float.floatToIntBits(list[i]);
-			outPut[count[(bitRepre/exp)%10]-1] = bitRepre;
-			count[(bitRepre/exp)%10]--;
+			outPut[count[(bitRepre / exp) % 10] - 1] = bitRepre;
+			count[(bitRepre / exp) % 10]--;
 		}
-		
+
 		for (int i = 0; i < list.length; i++) {
 			list[i] = Float.intBitsToFloat(outPut[i]);
 		}
-		
+
 	}
 
-	public float getMax(float[] list)
-	{
+	public float getMax(float[] list) {
 		int bitMax = Float.floatToIntBits(list[0]);
-		
+
 		for (int i = 0; i < list.length; i++) {
 			int bitTemp = Float.floatToIntBits(list[i]);
-			
-			if(bitTemp>bitMax)
+
+			if (bitTemp > bitMax)
 				bitMax = bitTemp;
 		}
-		
+
 		float maximun = Float.intBitsToFloat(bitMax);
-		
+
 		return maximun;
 	}
 
