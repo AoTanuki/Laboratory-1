@@ -1,3 +1,4 @@
+package model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
@@ -22,7 +23,7 @@ class ModelTest {
 			int[] list = model.getIntegerList();
 
 			assertEquals(5000, list.length,
-					"el tamaño que se espera es: 5000 " + "pero el arreglo tiene un tamaño de: " + list.length);
+					"el tamaï¿½o que se espera es: 5000 " + "pero el arreglo tiene un tamaï¿½o de: " + list.length);
 
 		} catch (Exception e) {
 			fail(e.getMessage());
@@ -34,7 +35,7 @@ class ModelTest {
 			float[] list = model.getFloatList();
 
 			assertEquals(5000, list.length,
-					"el tamaño que se espera es: 5000 " + "pero el arreglo tiene un tamaño de: " + list.length);
+					"el tamaï¿½o que se espera es: 5000 " + "pero el arreglo tiene un tamaï¿½o de: " + list.length);
 
 		} catch (Exception e) {
 			fail(e.getMessage());
@@ -54,7 +55,7 @@ class ModelTest {
 			for (int i = 0; i < list.length - 1; i++) {
 
 				if (!(list[i] <= list[i + 1])) {
-					fail("hay un numero que es mayor y esta en una posicion que no corresponde el cuál es: " + list[i]
+					fail("hay un numero que es mayor y esta en una posicion que no corresponde el cuï¿½l es: " + list[i]
 							+ " debe ser menor que: " + list[i + 1]);
 				} else {
 					assertTrue(true);
@@ -68,7 +69,7 @@ class ModelTest {
 			for (int i = 0; i < list.length - 1; i++) {
 
 				if (!(list[i] <= list[i + 1]) && list[i]!= list[i+1]) {
-					fail("hay un numero que es mayor y esta en una posicion que no corresponde el cuál es: " + list[i]
+					fail("hay un numero que es mayor y esta en una posicion que no corresponde el cuï¿½l es: " + list[i]
 							+ " debe ser menor que: " + list[i + 1]);
 				} else {
 					assertTrue(true);
@@ -87,7 +88,7 @@ class ModelTest {
 				int bit1 = Float.floatToIntBits(list1[i]);
 				int bit2 = Float.floatToIntBits(list1[i+1]);
 				if (!(bit1 <= bit2)) {
-					fail("hay un numero que es mayor y esta en una posicion que no corresponde el cuál es: " + list1[i]
+					fail("hay un numero que es mayor y esta en una posicion que no corresponde el cuï¿½l es: " + list1[i]
 							+ " debe ser menor que: " + list1[i + 1]);
 				} else {
 					assertTrue(true);
@@ -104,7 +105,7 @@ class ModelTest {
 				int bit2 = Float.floatToIntBits(list1[i+1]);
 				
 				if (!(bit1 <= bit2) && bit1!= bit2) {
-					fail("hay un numero que es mayor y esta en una posicion que no corresponde el cuál es: " + list1[i]
+					fail("hay un numero que es mayor y esta en una posicion que no corresponde el cuï¿½l es: " + list1[i]
 							+ " debe ser menor que: " + list1[i + 1]);
 				} else {
 					assertTrue(true);
