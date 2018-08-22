@@ -285,16 +285,58 @@ public class Model {
 	}
 
 	/**
-	 * @param size
-	 * @param startInterval
-	 * @param endInterval
-	 * @param cloneNumber
-	 * @param numberType
-	 * @param randomPorcentage
+	 * this method decide which algorithm use to generate the random list to sort but in a segment way
+	 * 
+	 * @param size             is the length of the list
+	 * @param startInterval    define the interval's start of numbers what user want
+	 * @param endInterval      define the interval's end of numbers what user want
+	 * @param cloneNumber      this parameter define if the list would has numbers
+	 *                         clone
+	 * @param numberType       define which type of number is.
+	 * @param randomPorcentage is a double that define how much is disordered the list
 	 */
 	public void generateElements(int size, int startInterval, int endInterval, char cloneNumber, char numberType,
-			int randomPorcentage) {
-		// TODO implement here
+			double randomPorcentage) {
+
+		Random rand = new Random();
+		Object[] list = null;
+
+		list = segmentalRandomElements(size, startInterval, endInterval, cloneNumber, numberType, rand,
+				randomPorcentage);
+
+		switch (numberType) {
+		case FLOAT:
+
+			this.floatList = new float[list.length];
+			for (int i = 0; i < list.length; i++) {
+				this.floatList[i] = (float) list[i];
+			}
+			break;
+
+		case INTEGERS:
+
+			this.integerList = new int[list.length];
+			for (int i = 0; i < list.length; i++) {
+				this.integerList[i] = (int) list[i];
+			}
+			break;
+		}
+	}
+
+	// this method fill the list with numbers in a interval.
+	public void fillListWithNumbersInAInterval(char numberType, char cloneNumber, Object[] list, int startInterval,
+			int endInterval, Random rand) {
+		for (int i = 0; i < list.length; i++) {
+			if (numberType == FLOAT) {
+				list[i] = startInterval + (endInterval - startInterval) * rand.nextFloat();
+			} else {
+				if (cloneNumber == NO_CLONE_NUMBERS) {
+					list[i] = startInterval + i;
+				} else {
+					list[i] = (int) Math.floor(Math.random() * (startInterval - (endInterval + 1)) + endInterval);
+				}
+			}
+		}
 	}
 
 	/**
@@ -314,7 +356,7 @@ public class Model {
 	public Object[] completeRandomElements(int size, int startInterval, int endInterval, char cloneNumber,
 			char numberType, Random rand) {
 
-		// if we need to create a list without clone numbers and the numbertypes are
+		// if we need to create a list without clone numbers and the number types are
 		// integers, the list's size would be the same as the interval
 		if (cloneNumber == NO_CLONE_NUMBERS && (endInterval - startInterval + 1) < size && numberType == INTEGERS)
 			size = endInterval - startInterval + 1;
@@ -451,37 +493,51 @@ public class Model {
 		return list;
 	}
 
-	// this method fill the list with numbers in a interval.
-	public void fillListWithNumbersInAInterval(char numberType, char cloneNumber, Object[] list, int startInterval,
-			int endInterval, Random rand) {
-		for (int i = 0; i < list.length; i++) {
-			if (numberType == FLOAT) {
-				list[i] = startInterval + (endInterval - startInterval) * rand.nextFloat();
-			} else {
-				if (cloneNumber == NO_CLONE_NUMBERS) {
-					list[i] = startInterval + i;
-				} else {
-					list[i] = (int) Math.floor(Math.random() * (startInterval - (endInterval + 1)) + endInterval);
-				}
+	/**
+	 * 
+	 * 
+	  *@param size          is the length of the list
+	 * @param startInterval define the interval's start of numbers what user want
+	 * @param endInterval   define the interval's end of numbers what user want
+	 * @param cloneNumber   this parameter define if the list would has numbers
+	 *                      clone
+	 * @param numberType    define which type of number is.
+	 * @param randomPorcentage is a double that define how much is disordered the list
+	 * @return list is a object array that provide a list with the numbers in the
+	 *         interval but sorted in a inverted form. This list only has one type
+	 *         of number. it is defined by the parameter "numberType"
+	 */
+	public Object[] segmentalRandomElements(int size, int startInterval, int endInterval, char cloneNumber,
+			char numberType, Random rand, double randomPorcentage) {
+
+		// if we need to create a list without clone numbers and the numbertypes are
+		// integers, the list's size would be the same as the interval
+		if (cloneNumber == NO_CLONE_NUMBERS && (endInterval - startInterval + 1) < size && numberType == INTEGERS)
+			size = endInterval - startInterval + 1;
+
+		Object[] list = new Object[size];
+
+		// generate sorted list
+		list = sortedElements(size, startInterval, endInterval, cloneNumber, numberType, rand);
+
+		for (int positionsDisordered = (int) (size
+				* randomPorcentage); positionsDisordered > 0; positionsDisordered -= 2) {
+
+			int index1 = (int) Math.floor(Math.random() * (-(size + 1)) + size);
+			int index2 = (int) Math.floor(Math.random() * (-(size + 1)) + size);
+
+			while (index2 == index1) {
+				index2 = (int) Math.floor(Math.random() * (-(size + 1)) + size);
 			}
+
+			Object temp = list[index1];
+			list[index1] = list[index2];
+			list[index2] = temp;
 		}
+		return list;
 	}
 
-	/**
-	 * @return
-	 */
-	public float[] segmentalFloatRandomElements() {
-		// TODO implement here
-		return null;
-	}
 
-	/**
-	 * @return
-	 */
-	public int[] segmentalIntegerRandomElements() {
-		// TODO implement here
-		return null;
-	}
 
 	/**
 	 * @param numbertype
