@@ -237,11 +237,11 @@ public class Model {
 			switch (generateType) {
 			case SORT_GENERATION:
 
-				// TODO
+				list = sortedElements(size, startInterval, endInterval, cloneNumber, numberType, rand);
 				break;
 
 			case INVERSAL_SORT_GENERATION:
-				// TODO
+				list = invertedElements(size, startInterval, endInterval, cloneNumber, numberType, rand);
 				break;
 
 			case COMPLETLY_RANDOM_GENERATION:
@@ -262,11 +262,11 @@ public class Model {
 			switch (generateType) {
 			case SORT_GENERATION:
 
-				// TODO
+				list = sortedElements(size, startInterval, endInterval, cloneNumber, numberType, rand);
 				break;
 
 			case INVERSAL_SORT_GENERATION:
-				// TODO
+				list = invertedElements(size, startInterval, endInterval, cloneNumber, numberType, rand);
 				break;
 
 			case COMPLETLY_RANDOM_GENERATION:
@@ -336,11 +336,20 @@ public class Model {
 	}
 
 	/**
-	 * @return
+	 * this method create a list with the numbers in the interval but sorted
+	 * 
+	 * @param size          is the length of the list
+	 * @param startInterval define the interval's start of numbers what user want
+	 * @param endInterval   define the interval's end of numbers what user want
+	 * @param cloneNumber   this parameter define if the list would has numbers
+	 *                      clone
+	 * @param numberType    define which type of number is.
+	 * @return list is a object array that provide a list with the numbers in the
+	 *         interval but sorted. This list only has one type of number. it is
+	 *         defined by the parameter "numberType"
 	 */
 	public Object[] sortedElements(int size, int startInterval, int endInterval, char cloneNumber, char numberType,
 			Random rand) {
-		// TODO implement here
 
 		// if we need to create a list without clone numbers and the numbertypes are
 		// integers, the list's size would be the same as the interval
@@ -351,32 +360,94 @@ public class Model {
 
 		// fill the list with numbers in the interval
 		fillListWithNumbersInAInterval(numberType, cloneNumber, list, startInterval, endInterval, rand);
-		
-		if(numberType == FLOAT)
-		{
+
+		// sort the list depend its type, if the numbers are integers, they would be
+		// sorted by pigeonSort. Else, they would be sorted by radixsort
+		if (numberType == FLOAT) {
 			float[] auxiliarList = new float[list.length];
 			for (int i = 0; i < list.length; i++) {
 				auxiliarList[i] = (float) list[i];
 			}
-			auxiliarList =radixSort(auxiliarList);
-			
+			radixSort(auxiliarList);
+
 			for (int i = 0; i < list.length; i++) {
 				list[i] = auxiliarList[i];
 			}
-		}else
-		{
+		} else {
 			int[] auxiliarList = new int[list.length];
 			for (int i = 0; i < list.length; i++) {
 				auxiliarList[i] = (int) list[i];
 			}
-			
-			auxiliarList=pigeonHoleSort(auxiliarList);
-			
+
+			pigeonHoleSort(auxiliarList);
+
 			for (int i = 0; i < list.length; i++) {
 				list[i] = auxiliarList[i];
 			}
 		}
-		
+
+		return list;
+	}
+
+	/**
+	 * this method create a list with the numbers in the interval but sorted and
+	 * inverted.
+	 * 
+	 * @param size          is the length of the list
+	 * @param startInterval define the interval's start of numbers what user want
+	 * @param endInterval   define the interval's end of numbers what user want
+	 * @param cloneNumber   this parameter define if the list would has numbers
+	 *                      clone
+	 * @param numberType    define which type of number is.
+	 * @return list is a object array that provide a list with the numbers in the
+	 *         interval but sorted in a inverted form. This list only has one type
+	 *         of number. it is defined by the parameter "numberType"
+	 */
+	public Object[] invertedElements(int size, int startInterval, int endInterval, char cloneNumber, char numberType,
+			Random rand) {
+
+		// if we need to create a list without clone numbers and the numbertypes are
+		// integers, the list's size would be the same as the interval
+		if (cloneNumber == NO_CLONE_NUMBERS && (endInterval - startInterval + 1) < size && numberType == INTEGERS)
+			size = endInterval - startInterval + 1;
+
+		Object[] list = new Object[size];
+
+		// fill the list with numbers in the interval
+		fillListWithNumbersInAInterval(numberType, cloneNumber, list, startInterval, endInterval, rand);
+
+		// use sorted elements to sort the elements
+		list = sortedElements(size, startInterval, endInterval, cloneNumber, numberType, rand);
+
+		// invert the array, if the size is inpar, the algorithm keep mid index in its
+		// position. Also, take the opositive position of next index. it's like, imagine
+		// a array with a size of 7. so the index 3 is the array handle. next, we would
+		// take next position, 4, and we will change by position 2 (two position
+		// before). thus, 5 by 3 because we walk back 4 indexes.
+		// when size is par, we will walk back 2 positions but, mid will walks too. for
+		// instance, we have a array with size of 6, 3 is the middle but in a relative
+		// form. So, we change what is within index 3 by index 2. Thus, again, with 4
+		// with 1, here we had 3 walks back, one by the first swap and 2 for this swap.
+		// We continue with index 5, so, we walk back 3 accumulated position, plus two
+		// more to find index 0: 5-5 =0. that's mean, that we will change the final
+		// element of array by the first element
+		int walk = 1;
+		for (int midIndex = list.length / 2; midIndex <= list.length; midIndex++) {
+
+			Object temp = list[midIndex];
+			if (list.length % 2 == 0) {
+				list[midIndex] = list[midIndex - walk];
+				list[midIndex - walk] = temp;
+
+				walk += 2;
+			} else {
+				walk++;
+
+				list[midIndex] = list[midIndex - walk];
+				list[midIndex - walk] = temp;
+			}
+		}
+
 		return list;
 	}
 
@@ -394,30 +465,6 @@ public class Model {
 				}
 			}
 		}
-	}
-
-	/**
-	 * @return
-	 */
-	public int[] sortedIntegerElements() {
-		// TODO implement here
-		return null;
-	}
-
-	/**
-	 * @return
-	 */
-	public float[] invertedFloatElements() {
-		// TODO implement here
-		return null;
-	}
-
-	/**
-	 * @return
-	 */
-	public int[] invertedIntegerElements() {
-		// TODO implement here
-		return null;
 	}
 
 	/**
@@ -456,24 +503,6 @@ public class Model {
 	 * @param list
 	 * @return
 	 */
-	public float[] sortFloats(float[] list) {
-		// TODO implement here
-		return null;
-	}
-
-	/**
-	 * @param list
-	 * @return
-	 */
-	public int[] sortIntegers(int[] list) {
-		// TODO implement here
-		return null;
-	}
-
-	/**
-	 * @param list
-	 * @return
-	 */
 	public int[] quickSort(int[] list) {
 		// TODO implement here
 		return null;
@@ -485,7 +514,7 @@ public class Model {
 	 */
 	public void pigeonHoleSort(int[] list) {
 		// TODO implement here
-		
+
 	}
 
 	/**
@@ -494,7 +523,7 @@ public class Model {
 	 */
 	public void radixSort(float[] list) {
 		// TODO implement here
-		
+
 	}
 
 	public float[] getFloatList() {
