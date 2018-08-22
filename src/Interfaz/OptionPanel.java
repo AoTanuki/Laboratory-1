@@ -57,10 +57,10 @@ public class OptionPanel extends JPanel implements ActionListener{
 		    	if(selection==0)
 		    	{
 		    		
-		    		interfaz.ReadNumbersFile("./Datos", 'a');
+		    		interfaz.ReadNumbersFile("./", 'a');
 		    	}
 		    	else {
-		    		interfaz.ReadNumbersFile("./Datos", 'a');
+		    		interfaz.ReadNumbersFile("./", 'a');
 		    	}
 		    	
 		    
@@ -76,14 +76,8 @@ public class OptionPanel extends JPanel implements ActionListener{
 		    	
 		    	
 		    	break;
-			
-			
-			
-			default:
 		
-		
-		
-		}
+			}
 		
 	}
 	
