@@ -111,8 +111,8 @@ public class Controller implements Initializable {
 			if (combTypeNumber.valueProperty().getValue() != null
 					&& !combTypeNumber.valueProperty().getValue().isEmpty()) {
 
-				char numberType = (combTypeNumber.valueProperty().getValue().equalsIgnoreCase("float")) ? Model.INTEGERS
-						: Model.FLOAT;
+				char numberType = (combTypeNumber.valueProperty().getValue().equalsIgnoreCase("float")) ? Model.FLOAT
+						: Model.INTEGERS;
 
 				try {
 					model.readNumbersFile(file, numberType);
@@ -174,7 +174,7 @@ public class Controller implements Initializable {
 
 			txtRunTime.setText((long) performance[0] + "");
 			txtAlgorithm.setText((String) performance[1] + "");
-			txtOutputSize.setText(model.getFloatList().length + "");
+			txtOutputSize.setText(model.getIntegerList().length + "");
 
 			String message = "";
 			for (int i = 0; i < model.getIntegerSortedList().length; i++) {
@@ -190,9 +190,10 @@ public class Controller implements Initializable {
 	@FXML
 	void toGenerate(ActionEvent event) {
 
+		model.setMessage("");
 		char cloneNumber = 0, numberType = 0, generateType = 0;
 		int size = 0, endInterval = 0, startInterval = 0;
-
+		boolean errorAppears = false;
 		// ------------------
 		try {
 			size = Integer.parseInt(txtInputSize.getText());
@@ -214,15 +215,18 @@ public class Controller implements Initializable {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Please, check the second field of interval", "error",
 					JOptionPane.ERROR_MESSAGE);
+			
 		}
 
 		// ----------------
 		if (checkCloneNumberNo.isSelected() && checkCloneNumberYes.isSelected()) {
 			JOptionPane.showMessageDialog(null, "Please, only select one option by Clone number", "error",
 					JOptionPane.ERROR_MESSAGE);
+			errorAppears = true;
 		} else if (!checkCloneNumberNo.isSelected() && !checkCloneNumberYes.isSelected()) {
 			JOptionPane.showMessageDialog(null, "Please, select one option by Clone number", "error",
 					JOptionPane.ERROR_MESSAGE);
+			errorAppears = true;
 		} else {
 			if (checkCloneNumberNo.isSelected()) {
 				cloneNumber = Model.NO_CLONE_NUMBERS;
@@ -235,9 +239,11 @@ public class Controller implements Initializable {
 		if (checkNumberTypeFloat.isSelected() && checkNumberTypeInteger.isSelected()) {
 			JOptionPane.showMessageDialog(null, "Please, only select one option by Number Type", "error",
 					JOptionPane.ERROR_MESSAGE);
+			errorAppears = true;
 		} else if (!checkNumberTypeFloat.isSelected() && !checkNumberTypeInteger.isSelected()) {
 			JOptionPane.showMessageDialog(null, "Please, select one option by Numbers type", "error",
 					JOptionPane.ERROR_MESSAGE);
+			errorAppears = true;
 		} else {
 			if (checkNumberTypeFloat.isSelected()) {
 				numberType = Model.FLOAT;
@@ -261,9 +267,11 @@ public class Controller implements Initializable {
 		if (selectOptions > 1) {
 			JOptionPane.showMessageDialog(null, "Please, only select one option by Generation type", "error",
 					JOptionPane.ERROR_MESSAGE);
+			errorAppears = true;
 		} else if (selectOptions == 0) {
 			JOptionPane.showMessageDialog(null, "Please, select one option by Generation type", "error",
 					JOptionPane.ERROR_MESSAGE);
+			errorAppears = true;
 		} else {
 			if (checkGenerationSorted.isSelected())
 				generateType = Model.SORT_GENERATION;
@@ -275,55 +283,46 @@ public class Controller implements Initializable {
 				generateType = Model.PERCENT_RANDOM_GENERATION;
 		}
 
-		if (generateType == Model.PERCENT_RANDOM_GENERATION) {
-			try {
-				double randomPorcentage = Double.parseDouble(txtGeneratonPercent.getText());
-				
-				if(!(size<endInterval-startInterval))
-				{
-					model.generateElements(size, startInterval, endInterval, cloneNumber, numberType, randomPorcentage);
-				}else{
-					JOptionPane.showMessageDialog(null, "Interval can't be less than size", "error",
+		if (!errorAppears) {
+			if (generateType == Model.PERCENT_RANDOM_GENERATION) {
+				try {
+					double randomPorcentage = Double.parseDouble(txtGeneratonPercent.getText());
+
+					if (!(size < endInterval - startInterval)) {
+						model.generateElements(size, startInterval, endInterval, cloneNumber, numberType,
+								randomPorcentage);
+					} else {
+						JOptionPane.showMessageDialog(null, "Interval can't be less than size", "error",
+								JOptionPane.ERROR_MESSAGE);
+					}
+				} catch (NumberFormatException e) {
+					JOptionPane.showMessageDialog(null, "Please, check porcentage field ", "error",
 							JOptionPane.ERROR_MESSAGE);
 				}
-			} catch (NumberFormatException e) {
-				JOptionPane.showMessageDialog(null, "Please, check porcentage field ", "error",
-						JOptionPane.ERROR_MESSAGE);
-			}
-		} else {
+			} else {
 
-			try {
-				if(!(size<endInterval-startInterval))
-				{
-				model.generateElements(size, startInterval, endInterval, cloneNumber, generateType, numberType);
-				}else{
-					JOptionPane.showMessageDialog(null, "Interval can't be less than size", "error",
+				try {
+					if (!(size < endInterval - startInterval)) {
+						model.generateElements(size, startInterval, endInterval, cloneNumber, generateType, numberType);
+					
+					} else {
+						JOptionPane.showMessageDialog(null, "Interval can't be less than size", "error",
+								JOptionPane.ERROR_MESSAGE);
+					}
+				} catch (IOException e) {
+
+					JOptionPane.showMessageDialog(null, "We're sorry, we had a problem writting the file", "error",
 							JOptionPane.ERROR_MESSAGE);
 				}
-			} catch (IOException e) {
-
-				JOptionPane.showMessageDialog(null, "We're sorry, we had a problem writting the file", "error",
-						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 
-		String message = "";
-		if (numberType == Model.FLOAT && model.getFloatList()!= null) {
-			for (int i = 0; i < model.getFloatList().length; i++) {
-				message += model.getFloatList()[i] + " - ";
-			}
-			model.setIntegerList(null);
-		} else if(numberType == Model.INTEGERS && model.getIntegerList()!= null){
-			for (int i = 0; i < model.getIntegerList().length; i++) {
-				message += model.getIntegerList()[i] + " - ";
-			}
-			model.setFloatList(null);
+		if (!errorAppears) {
+			System.out.println(model.getMessage());
+			txtNonSortNumbers.setText(model.getMessage());
 		}
-		txtNonSortNumbers.setText(message);
-
 	}
 
-	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		ObservableList<String> typeNumbers = FXCollections.observableArrayList("Floats", "Integers");
@@ -338,7 +337,6 @@ public class Controller implements Initializable {
 
 	@FXML
 	void disCheckCloneNumber(MouseEvent event) {
-	
-		
+
 	}
 }

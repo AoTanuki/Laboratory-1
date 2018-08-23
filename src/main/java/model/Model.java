@@ -64,12 +64,12 @@ public class Model {
 	 * 
 	 */
 	public static final char COMPLETLY_RANDOM_GENERATION = 'c';
-	
+
 	/**
 	 * 
 	 */
 	public static final char PERCENT_RANDOM_GENERATION = 'P';
-	
+
 	/**
 	 * 
 	 */
@@ -89,6 +89,11 @@ public class Model {
 	 * 
 	 */
 	private int[] integerSortedList;
+
+	/**
+	 * 
+	 */
+	private String message;
 
 	/**
 	 * Default constructor
@@ -146,9 +151,7 @@ public class Model {
 		if (!buffer.readLine().equalsIgnoreCase("#set's size")) {
 			throw new FileWithNoSetSizeException();
 		}
-		
-		
-		
+
 		int size = Integer.parseInt(buffer.readLine());
 		auxiliarList = new float[size];
 
@@ -236,13 +239,8 @@ public class Model {
 			line = buffer.readLine();
 		}
 
-		
 		return auxiliarList;
 	}
-
-	
-
-	
 
 	/**
 	 * this method decide which algorithm use to generate the random list to sort
@@ -253,7 +251,7 @@ public class Model {
 	 * @param cloneNumber   this parameter define if the list would has numbers
 	 *                      clone
 	 * @param numberType    define which type of number is.
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public void generateElements(int size, int startInterval, int endInterval, char cloneNumber, char generateType,
 			char numberType) throws IOException {
@@ -279,20 +277,21 @@ public class Model {
 			}
 
 			BufferedWriter writter = new BufferedWriter(new FileWriter("./data/numbersets/integersFile.txt"));
-			
+
 			writter.write("#set's size");
 			writter.newLine();
 			writter.write(list.length + "");
 			writter.newLine();
 			writter.write("#numbers set");
 			writter.newLine();
-			String numberset = "";
+//			String numberset = "";
 			this.integerList = new int[list.length];
 			for (int i = 0; i < list.length; i++) {
 				this.integerList[i] = (int) list[i];
-				numberset+=integerList[i]+" ";
+//				numberset+=integerList[i]+" ";
+				writter.write(integerList[i] + " ");
 			}
-			writter.write(numberset);
+
 			writter.close();
 
 			break;
@@ -314,6 +313,8 @@ public class Model {
 				break;
 			}
 
+			// TODO
+			System.out.println("Sale ordenamientos");
 			BufferedWriter writter1 = new BufferedWriter(new FileWriter("./data/numbersets/floatsFile.txt"));
 			writter1.write("#set's size");
 			writter1.newLine();
@@ -321,13 +322,13 @@ public class Model {
 			writter1.newLine();
 			writter1.write("#numbers set");
 			writter1.newLine();
-			String numberset1 = "";
+//			String numberset1 = "";
 			this.floatList = new float[list.length];
 			for (int i = 0; i < list.length; i++) {
 				this.floatList[i] = (float) list[i];
-				numberset1+=floatList[i]+" ";
+				writter1.write(floatList[i] + " ");
 			}
-			writter1.write(numberset1);
+
 			writter1.close();
 
 			break;
@@ -390,6 +391,9 @@ public class Model {
 				}
 			}
 		}
+
+		// TODO
+		System.out.println("Sale llenar");
 	}
 
 	/**
@@ -467,6 +471,7 @@ public class Model {
 
 			for (int i = 0; i < list.length; i++) {
 				list[i] = auxiliarList[i];
+				message += list[i] + " - ";
 			}
 		} else {
 			int[] auxiliarList = new int[list.length];
@@ -478,6 +483,7 @@ public class Model {
 
 			for (int i = 0; i < list.length; i++) {
 				list[i] = auxiliarList[i];
+				message += list[i] + " - ";
 			}
 		}
 
@@ -511,35 +517,30 @@ public class Model {
 		// fill the list with numbers in the interval
 		fillListWithNumbersInAInterval(numberType, cloneNumber, list, startInterval, endInterval, rand);
 
-		// use sorted elements to sort the elements
-		list = sortedElements(size, startInterval, endInterval, cloneNumber, numberType, rand);
+		// sort the list depend its type, if the numbers are integers, they would be
+		// sorted by pigeonSort. Else, they would be sorted by radixsort
+		if (numberType == FLOAT) {
+			float[] auxiliarList = new float[list.length];
+			for (int i = 0; i < list.length; i++) {
+				auxiliarList[i] = (float) list[i];
+			}
+			radixSortInverted(auxiliarList);
 
-		// invert the array, if the size is inpar, the algorithm keep mid index in its
-		// position. Also, take the opositive position of next index. it's like, imagine
-		// a array with a size of 7. so the index 3 is the array handle. next, we would
-		// take next position, 4, and we will change by position 2 (two position
-		// before). thus, 5 by 3 because we walk back 4 indexes.
-		// when size is par, we will walk back 2 positions but, mid will walks too. for
-		// instance, we have a array with size of 6, 3 is the middle but in a relative
-		// form. So, we change what is within index 3 by index 2. Thus, again, with 4
-		// with 1, here we had 3 walks back, one by the first swap and 2 for this swap.
-		// We continue with index 5, so, we walk back 3 accumulated position, plus two
-		// more to find index 0: 5-5 =0. that's mean, that we will change the final
-		// element of array by the first element
-		int walk = 1;
-		for (int midIndex = list.length / 2; midIndex <= list.length; midIndex++) {
+			for (int i = 0; i < list.length; i++) {
+				list[i] = auxiliarList[i];
+				message += list[i] + " - ";
+			}
+		} else {
+			int[] auxiliarList = new int[list.length];
+			for (int i = 0; i < list.length; i++) {
+				auxiliarList[i] = (int) list[i];
+			}
 
-			Object temp = list[midIndex];
-			if (list.length % 2 == 0) {
-				list[midIndex] = list[midIndex - walk];
-				list[midIndex - walk] = temp;
+			pigeonHoleSortInverted(auxiliarList);
 
-				walk += 2;
-			} else {
-				walk++;
-
-				list[midIndex] = list[midIndex - walk];
-				list[midIndex - walk] = temp;
+			for (int i = 0; i < list.length; i++) {
+				list[i] = auxiliarList[i];
+				message += list[i] + " - ";
 			}
 		}
 
@@ -577,11 +578,11 @@ public class Model {
 		for (int positionsDisordered = (int) (size
 				* randomPorcentage); positionsDisordered > 0; positionsDisordered -= 2) {
 
-			int index1 = (int) Math.floor(Math.random() * ((size )) );
-			int index2 = (int) Math.floor(Math.random() * ((size )));
+			int index1 = (int) Math.floor(Math.random() * ((size)));
+			int index2 = (int) Math.floor(Math.random() * ((size)));
 
 			while (index2 == index1) {
-				index2 = (int) Math.floor(Math.random() * ((size )));
+				index2 = (int) Math.floor(Math.random() * ((size)));
 			}
 
 			Object temp = list[index1];
@@ -612,9 +613,9 @@ public class Model {
 			algorithm = RADIX;
 			floatSortedList = floatList.clone();
 
-			timeStart = System.nanoTime();
+			timeStart = System.currentTimeMillis();
 			radixSort(floatSortedList);
-			runtime = System.nanoTime()- timeStart;
+			runtime = System.currentTimeMillis() - timeStart;
 			break;
 
 		case INTEGERS:
@@ -678,7 +679,6 @@ public class Model {
 
 		return smallerElementIndex + 1;
 	}
-	
 
 	/**
 	 * @param list
@@ -702,13 +702,11 @@ public class Model {
 
 		int[] pigeonHoles = new int[range];
 
-		
 		// put every element in its respective hole
 		for (int i = 0; i < list.length; i++) {
 			int index = list[i] - minimun;
 			pigeonHoles[index]++;
 		}
-			
 
 		int index = 0;
 
@@ -716,6 +714,44 @@ public class Model {
 		for (int i = 0; i < range; i++) {
 			while (pigeonHoles[i]-- > 0) {
 				list[index++] = i + minimun;
+			}
+		}
+	}
+
+	/**
+	 * @param list
+	 * @return
+	 */
+	public void pigeonHoleSortInverted(int[] list) {
+
+		// find the minimum and the maximums valor
+		int minimun = list[0];
+		int maximun = list[0];
+
+		for (int i = 0; i < list.length; i++) {
+			if (list[i] > maximun)
+				maximun = list[i];
+			if (list[i] < minimun)
+				minimun = list[i];
+		}
+
+		// find the range of holes
+		int range = maximun - minimun + 1;
+
+		int[] pigeonHoles = new int[range];
+
+		// put every element in its respective hole
+		for (int i = 0; i < list.length; i++) {
+			int index = list[i] - minimun;
+			pigeonHoles[index]++;
+		}
+
+		int index = list.length - 1;
+
+		// for every hole, take its elements and put in array
+		for (int i = 0; i < range; i++) {
+			while (pigeonHoles[i]-- > 0) {
+				list[index--] = i + minimun;
 			}
 		}
 	}
@@ -778,6 +814,49 @@ public class Model {
 		return maximun;
 	}
 
+	/**
+	 * @param list
+	 * @return
+	 */
+	public void radixSortInverted(float[] list) {
+
+		float maximus = getMax(list);
+
+		int bitMaximus = Float.floatToIntBits(maximus);
+
+		for (int exp = 1; bitMaximus / exp > 0; exp *= 10) {
+
+			countSortInverted(list, exp);
+		}
+	}
+
+	private void countSortInverted(float[] list, int exp) {
+
+		int[] outPut = new int[list.length];
+		int[] count = new int[10];
+
+		for (int i = 0; i < list.length; i++) {
+			int bitRepre = Float.floatToIntBits(list[i]);
+			count[(bitRepre / exp) % 10]++;
+		}
+
+		for (int i = 1; i < count.length; i++) {
+			count[i] += count[i - 1];
+		}
+
+		for (int i = list.length - 1; i >= 0; i--) {
+
+			int bitRepre = Float.floatToIntBits(list[i]);
+			outPut[count[(bitRepre / exp) % 10] - 1] = bitRepre;
+			count[(bitRepre / exp) % 10]--;
+		}
+
+		for (int i = list.length; i >= 0; i++) {
+			list[i] = Float.intBitsToFloat(outPut[i]);
+		}
+
+	}
+
 	public float[] getFloatList() {
 		return floatList;
 	}
@@ -808,6 +887,20 @@ public class Model {
 
 	public void setIntegerSortedList(int[] integerSortedist) {
 		this.integerSortedList = integerSortedist;
+	}
+
+	/**
+	 * @return the message
+	 */
+	public String getMessage() {
+		return message;
+	}
+
+	/**
+	 * @param message the message to set
+	 */
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 }
