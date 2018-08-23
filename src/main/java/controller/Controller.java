@@ -190,6 +190,7 @@ public class Controller implements Initializable {
 	@FXML
 	void toGenerate(ActionEvent event) {
 
+		model.setMessage("");
 		char cloneNumber = 0, numberType = 0, generateType = 0;
 		int size = 0, endInterval = 0, startInterval = 0;
 		boolean errorAppears = false;
@@ -303,6 +304,7 @@ public class Controller implements Initializable {
 				try {
 					if (!(size < endInterval - startInterval)) {
 						model.generateElements(size, startInterval, endInterval, cloneNumber, generateType, numberType);
+					
 					} else {
 						JOptionPane.showMessageDialog(null, "Interval can't be less than size", "error",
 								JOptionPane.ERROR_MESSAGE);
@@ -315,20 +317,9 @@ public class Controller implements Initializable {
 			}
 		}
 
-		String message = "";
 		if (!errorAppears) {
-			if (numberType == Model.FLOAT && model.getFloatList() != null) {
-				for (int i = 0; i < model.getFloatList().length; i++) {
-					message += model.getFloatList()[i] + " - ";
-				}
-				model.setIntegerList(null);
-			} else if (numberType == Model.INTEGERS && model.getIntegerList() != null) {
-				for (int i = 0; i < model.getIntegerList().length; i++) {
-					message += model.getIntegerList()[i] + " - ";
-				}
-				model.setFloatList(null);
-			}
-			txtNonSortNumbers.setText(message);
+			System.out.println(model.getMessage());
+			txtNonSortNumbers.setText(model.getMessage());
 		}
 	}
 
