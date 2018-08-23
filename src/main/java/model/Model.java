@@ -165,7 +165,7 @@ public class Model {
 					} catch (NumberFormatException e) {
 						throw new NumberFormatException(
 								"There is a problem in your file, some value was not good write " + "\n the number is: "
-										+ lineList[i] + " in the line: " + numberline);
+										+ lineList[i] + " in the line: " + numberline + "  ");
 					}
 				}
 			}
