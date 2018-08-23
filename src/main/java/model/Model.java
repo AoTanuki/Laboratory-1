@@ -64,6 +64,12 @@ public class Model {
 	 * 
 	 */
 	public static final char COMPLETLY_RANDOM_GENERATION = 'c';
+	
+	/**
+	 * 
+	 */
+	public static final char PERCENT_RANDOM_GENERATION = 'P';
+	
 	/**
 	 * 
 	 */
@@ -72,7 +78,7 @@ public class Model {
 	/**
 	 * 
 	 */
-	private float[] floatSortedist;
+	private float[] floatSortedList;
 
 	/**
 	 * 
@@ -82,7 +88,7 @@ public class Model {
 	/**
 	 * 
 	 */
-	private int[] integerSortedist;
+	private int[] integerSortedList;
 
 	/**
 	 * Default constructor
@@ -165,7 +171,7 @@ public class Model {
 					} catch (NumberFormatException e) {
 						throw new NumberFormatException(
 								"There is a problem in your file, some value was not good write " + "\n the number is: "
-										+ lineList[i] + " in the line: " + numberline);
+										+ lineList[i] + " in the line: " + numberline + "  ");
 					}
 				}
 			}
@@ -414,7 +420,7 @@ public class Model {
 		fillListWithNumbersInAInterval(numberType, cloneNumber, list, startInterval, endInterval, rand);
 
 		for (int i = 0; i < list.length; i++) {
-			int randomIndex = (int) Math.floor(Math.random() * (-(list.length + 1)) + list.length);
+			int randomIndex = (int) Math.floor(Math.random() * ((list.length)));
 
 			Object temp = list[i];
 			list[i] = list[randomIndex];
@@ -571,11 +577,11 @@ public class Model {
 		for (int positionsDisordered = (int) (size
 				* randomPorcentage); positionsDisordered > 0; positionsDisordered -= 2) {
 
-			int index1 = (int) Math.floor(Math.random() * (-(size + 1)) + size);
-			int index2 = (int) Math.floor(Math.random() * (-(size + 1)) + size);
+			int index1 = (int) Math.floor(Math.random() * ((size )) );
+			int index2 = (int) Math.floor(Math.random() * ((size )));
 
 			while (index2 == index1) {
-				index2 = (int) Math.floor(Math.random() * (-(size + 1)) + size);
+				index2 = (int) Math.floor(Math.random() * ((size )));
 			}
 
 			Object temp = list[index1];
@@ -604,24 +610,24 @@ public class Model {
 		switch (numbertype) {
 		case FLOAT:
 			algorithm = RADIX;
-			floatSortedist = floatList.clone();
+			floatSortedList = floatList.clone();
 
-			timeStart = System.currentTimeMillis();
-			radixSort(floatSortedist);
-			runtime = System.currentTimeMillis() - timeStart;
+			timeStart = System.nanoTime();
+			radixSort(floatSortedList);
+			runtime = System.nanoTime()- timeStart;
 			break;
 
 		case INTEGERS:
-			integerSortedist = integerList.clone();
-			if (integerSortedist.length <= 2500) {
+			integerSortedList = integerList.clone();
+			if (integerSortedList.length <= 2500) {
 				algorithm = QUICK_SORT;
 				timeStart = System.currentTimeMillis();
-				quickSort(integerSortedist, integerSortedist.length, 0);
+				quickSort(integerSortedList, integerSortedList.length, 0);
 				runtime = System.currentTimeMillis() - timeStart;
 			} else {
 				algorithm = PIGEONHOLE_SORT;
 				timeStart = System.currentTimeMillis();
-				pigeonHoleSort(integerSortedist);
+				pigeonHoleSort(integerSortedList);
 				runtime = System.currentTimeMillis() - timeStart;
 			}
 			break;
@@ -780,12 +786,12 @@ public class Model {
 		this.floatList = floatList;
 	}
 
-	public float[] getFloatSortedist() {
-		return floatSortedist;
+	public float[] getFloatSortedlist() {
+		return floatSortedList;
 	}
 
-	public void setFloatSortedist(float[] floatSortedist) {
-		this.floatSortedist = floatSortedist;
+	public void setFloatSortedList(float[] floatSortedist) {
+		this.floatSortedList = floatSortedist;
 	}
 
 	public int[] getIntegerList() {
@@ -796,12 +802,12 @@ public class Model {
 		this.integerList = integerList;
 	}
 
-	public int[] getIntegerSortedist() {
-		return integerSortedist;
+	public int[] getIntegerSortedList() {
+		return integerSortedList;
 	}
 
-	public void setIntegerSortedist(int[] integerSortedist) {
-		this.integerSortedist = integerSortedist;
+	public void setIntegerSortedList(int[] integerSortedist) {
+		this.integerSortedList = integerSortedist;
 	}
 
 }
