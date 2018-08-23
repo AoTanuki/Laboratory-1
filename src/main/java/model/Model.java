@@ -527,7 +527,7 @@ public class Model {
 		// more to find index 0: 5-5 =0. that's mean, that we will change the final
 		// element of array by the first element
 		int walk = 1;
-		for (int midIndex = list.length / 2; midIndex <= list.length; midIndex++) {
+		for (int midIndex = list.length / 2; midIndex <= list.length-1; midIndex++) {
 
 			Object temp = list[midIndex];
 			if (list.length % 2 == 0) {
@@ -612,9 +612,9 @@ public class Model {
 			algorithm = RADIX;
 			floatSortedList = floatList.clone();
 
-			timeStart = System.nanoTime();
+			timeStart = System.currentTimeMillis();
 			radixSort(floatSortedList);
-			runtime = System.nanoTime()- timeStart;
+			runtime = System.currentTimeMillis()- timeStart;
 			break;
 
 		case INTEGERS:
