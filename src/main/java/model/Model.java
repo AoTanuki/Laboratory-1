@@ -313,8 +313,6 @@ public class Model {
 				break;
 			}
 
-			// TODO
-			System.out.println("Sale ordenamientos");
 			BufferedWriter writter1 = new BufferedWriter(new FileWriter("./data/numbersets/floatsFile.txt"));
 			writter1.write("#set's size");
 			writter1.newLine();
@@ -392,8 +390,6 @@ public class Model {
 			}
 		}
 
-		// TODO
-		System.out.println("Sale llenar");
 	}
 
 	/**
@@ -429,6 +425,11 @@ public class Model {
 			Object temp = list[i];
 			list[i] = list[randomIndex];
 			list[randomIndex] = temp;
+
+		}
+
+		for (int i = 0; i < list.length; i++) {
+			message += list[i] + " - ";
 		}
 
 		return list;
@@ -452,7 +453,7 @@ public class Model {
 
 		// if we need to create a list without clone numbers and the numbertypes are
 		// integers, the list's size would be the same as the interval
-		if (cloneNumber == NO_CLONE_NUMBERS && (endInterval - startInterval + 1) < size && numberType == INTEGERS)
+		if (cloneNumber == NO_CLONE_NUMBERS && (endInterval - startInterval + 1) < size)
 			size = endInterval - startInterval + 1;
 
 		Object[] list = new Object[size];
@@ -571,7 +572,7 @@ public class Model {
 			size = endInterval - startInterval + 1;
 
 		Object[] list = new Object[size];
-
+		message = "";
 		// generate sorted list
 		list = sortedElements(size, startInterval, endInterval, cloneNumber, numberType, rand);
 
@@ -588,6 +589,10 @@ public class Model {
 			Object temp = list[index1];
 			list[index1] = list[index2];
 			list[index2] = temp;
+		}
+
+		for (int i = 0; i < list.length; i++) {
+			message += list[i] + " - ";
 		}
 		return list;
 	}
@@ -623,13 +628,16 @@ public class Model {
 			if (integerSortedList.length <= 2500) {
 				algorithm = QUICK_SORT;
 				timeStart = System.currentTimeMillis();
-				quickSort(integerSortedList, integerSortedList.length, 0);
+				quickSort(integerSortedList, integerSortedList.length - 1, 0);
 				runtime = System.currentTimeMillis() - timeStart;
+
 			} else {
 				algorithm = PIGEONHOLE_SORT;
 				timeStart = System.currentTimeMillis();
+				
 				pigeonHoleSort(integerSortedList);
 				runtime = System.currentTimeMillis() - timeStart;
+				
 			}
 			break;
 		}
@@ -677,7 +685,7 @@ public class Model {
 		list[smallerElementIndex + 1] = list[high];
 		list[high] = temp;
 
-		return smallerElementIndex + 1;
+		return smallerElementIndex+1;
 	}
 
 	/**
@@ -690,16 +698,20 @@ public class Model {
 		int minimun = list[0];
 		int maximun = list[0];
 
+	
 		for (int i = 0; i < list.length; i++) {
 			if (list[i] > maximun)
 				maximun = list[i];
 			if (list[i] < minimun)
 				minimun = list[i];
 		}
+		
+		
 
 		// find the range of holes
 		int range = maximun - minimun + 1;
 
+		
 		int[] pigeonHoles = new int[range];
 
 		// put every element in its respective hole
@@ -716,6 +728,8 @@ public class Model {
 				list[index++] = i + minimun;
 			}
 		}
+		
+	
 	}
 
 	/**
@@ -752,6 +766,7 @@ public class Model {
 		for (int i = 0; i < range; i++) {
 			while (pigeonHoles[i]-- > 0) {
 				list[index--] = i + minimun;
+
 			}
 		}
 	}
@@ -821,12 +836,21 @@ public class Model {
 	public void radixSortInverted(float[] list) {
 
 		float maximus = getMax(list);
+		System.out.println(maximus);
 
 		int bitMaximus = Float.floatToIntBits(maximus);
 
 		for (int exp = 1; bitMaximus / exp > 0; exp *= 10) {
 
 			countSortInverted(list, exp);
+		}
+
+		for (int i = 0; i < list.length; i++) {
+			float temp = list[list.length - 1 - i];
+
+			list[i] = list[list.length - 1 - i];
+			list[list.length - 1 - i] = temp;
+
 		}
 	}
 
@@ -851,7 +875,8 @@ public class Model {
 			count[(bitRepre / exp) % 10]--;
 		}
 
-		for (int i = list.length; i >= 0; i++) {
+		for (int i = 0; i < list.length; i++) {
+
 			list[i] = Float.intBitsToFloat(outPut[i]);
 		}
 

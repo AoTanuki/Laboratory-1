@@ -180,6 +180,8 @@ public class Controller implements Initializable {
 			for (int i = 0; i < model.getIntegerSortedList().length; i++) {
 				message += model.getIntegerSortedList()[i] + " - ";
 			}
+			
+			System.out.println(message);
 			txtSortedNumbers.setText(message);
 
 			model.setFloatSortedList(null);
@@ -207,6 +209,7 @@ public class Controller implements Initializable {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Please, check the first field of interval", "error",
 					JOptionPane.ERROR_MESSAGE);
+			errorAppears = true;
 		}
 
 		// ----------
@@ -215,6 +218,7 @@ public class Controller implements Initializable {
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Please, check the second field of interval", "error",
 					JOptionPane.ERROR_MESSAGE);
+			errorAppears = true;
 			
 		}
 
@@ -288,13 +292,9 @@ public class Controller implements Initializable {
 				try {
 					double randomPorcentage = Double.parseDouble(txtGeneratonPercent.getText());
 
-					if (!(size < endInterval - startInterval)) {
 						model.generateElements(size, startInterval, endInterval, cloneNumber, numberType,
 								randomPorcentage);
-					} else {
-						JOptionPane.showMessageDialog(null, "Interval can't be less than size", "error",
-								JOptionPane.ERROR_MESSAGE);
-					}
+					
 				} catch (NumberFormatException e) {
 					JOptionPane.showMessageDialog(null, "Please, check porcentage field ", "error",
 							JOptionPane.ERROR_MESSAGE);
@@ -302,12 +302,16 @@ public class Controller implements Initializable {
 			} else {
 
 				try {
-					if (!(size < endInterval - startInterval)) {
+					if (!(cloneNumber== Model.NO_CLONE_NUMBERS)) {
 						model.generateElements(size, startInterval, endInterval, cloneNumber, generateType, numberType);
 					
-					} else {
+					} else if(!(size < endInterval - startInterval)) {
+						model.generateElements(size, startInterval, endInterval, cloneNumber, generateType, numberType);
+					}else
+					{
 						JOptionPane.showMessageDialog(null, "Interval can't be less than size", "error",
 								JOptionPane.ERROR_MESSAGE);
+						errorAppears = true;
 					}
 				} catch (IOException e) {
 
@@ -318,7 +322,7 @@ public class Controller implements Initializable {
 		}
 
 		if (!errorAppears) {
-			System.out.println(model.getMessage());
+			
 			txtNonSortNumbers.setText(model.getMessage());
 		}
 	}
