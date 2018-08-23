@@ -64,6 +64,12 @@ public class Model {
 	 * 
 	 */
 	public static final char COMPLETLY_RANDOM_GENERATION = 'c';
+	
+	/**
+	 * 
+	 */
+	public static final char PERCENT_RANDOM_GENERATION = 'P';
+	
 	/**
 	 * 
 	 */
@@ -414,7 +420,7 @@ public class Model {
 		fillListWithNumbersInAInterval(numberType, cloneNumber, list, startInterval, endInterval, rand);
 
 		for (int i = 0; i < list.length; i++) {
-			int randomIndex = (int) Math.floor(Math.random() * (-(list.length + 1)) + list.length);
+			int randomIndex = (int) Math.floor(Math.random() * ((list.length)));
 
 			Object temp = list[i];
 			list[i] = list[randomIndex];
@@ -571,11 +577,11 @@ public class Model {
 		for (int positionsDisordered = (int) (size
 				* randomPorcentage); positionsDisordered > 0; positionsDisordered -= 2) {
 
-			int index1 = (int) Math.floor(Math.random() * (-(size + 1)) + size);
-			int index2 = (int) Math.floor(Math.random() * (-(size + 1)) + size);
+			int index1 = (int) Math.floor(Math.random() * ((size )) );
+			int index2 = (int) Math.floor(Math.random() * ((size )));
 
 			while (index2 == index1) {
-				index2 = (int) Math.floor(Math.random() * (-(size + 1)) + size);
+				index2 = (int) Math.floor(Math.random() * ((size )));
 			}
 
 			Object temp = list[index1];
