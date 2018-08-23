@@ -73,24 +73,50 @@ class ModelTest {
 		list2 = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
 
 	}
-	
-	public void setupScenary6()
-	{
+
+	public void setupScenary6() {
 		model = new Model();
 
 		list3 = new float[] { 10f, 9f, 8f, 7f, 6f, 5f, 4f, 3f, 2f, 1f };
 		model.radixSort(list3);
 		list4 = new float[] { 1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 10f };
-		
-	
-		
+
+	}
+
+	public void setupScenary7() {
+		model = new Model();
+
+		list3 = new float[] { 20f, 19f, 18f, 17f, 16f, 15f, 14f, 13f, 12f, 11f, 10f, 9f, 8f, 7f, 6f, 5f, 4f, 3f, 2f,
+				1f };
+		model.radixSort(list3);
+		list4 = new float[] { 1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 10f, 11f, 12f, 13f, 14f, 15f, 16f, 17f, 18f, 19f,
+				20f };
+
+	}
+
+	public void setupScenary8() {
+		model = new Model();
+
+		list3 = new float[] { 14f, 13f, 12f, 6f, 5f, 10f, 20f, 4f, 3f, 2f, 11f, 19f, 18f, 17f, 16f, 15f, 9f, 8f,
+				7f, 1f  };
+		model.radixSort(list3);
+		list4 = new float[] { 1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 10f, 11f, 12f, 13f, 14f, 15f, 16f, 17f, 18f,
+				19f, 20f };
+
 	}
 	
-	
-	
-	
-	
-	
+	public void setupScenary9() {
+		model = new Model();
+
+		list3 = new float[] { 18f, 30f, 29f, 28f, 21f, 4f, 13f, 12f, 11f, 3f, 2f, 19f, 27f, 17f, 16f, 15f, 20f,
+				7f, 6f, 5f, 26f, 25f, 24f, 23f, 22f, 14f, 10f, 9f, 8f, 1f };
+		model.radixSort(list3);
+		list4 = new float[] { 
+				1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 10f, 11f, 12f, 13f, 14f, 15f, 16f, 17f, 18f,
+				19f, 20f, 21f, 22f, 23f, 24f, 25f, 26f, 27f, 28f, 29f, 30f};
+
+	}
+
 	@Test
 	public void testFillListWithNumbersInAInterval() {
 		setupScenario1();
@@ -157,34 +183,19 @@ class ModelTest {
 
 	@Test
 	public void testRadixSort() {
-		model = new Model();
 
-		float[] list = new float[] { 10f, 9f, 8f, 7f, 6f, 5f, 4f, 3f, 2f, 1f };
-		model.radixSort(list);
-		float[] list2 = new float[] { 1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 10f };
+		setupScenary6();
 
-		assertArrayEquals(list, list2);
-
-		float[] list3 = new float[] { 20f, 19f, 18f, 17f, 16f, 15f, 14f, 13f, 12f, 11f, 10f, 9f, 8f, 7f, 6f, 5f, 4f, 3f,
-				2f, 1f };
-		model.radixSort(list3);
-		float[] list4 = new float[] { 1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 10f, 11f, 12f, 13f, 14f, 15f, 16f, 17f, 18f,
-				19f, 20f };
 		assertArrayEquals(list3, list4);
 
-		float[] list5 = new float[] { 14f, 13f, 12f, 6f, 5f, 10f, 20f, 4f, 3f, 2f, 11f, 19f, 18f, 17f, 16f, 15f, 9f, 8f,
-				7f, 1f };
-		model.radixSort(list5);
-		float[] list6 = new float[] { 1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 10f, 11f, 12f, 13f, 14f, 15f, 16f, 17f, 18f,
-				19f, 20f };
-		assertArrayEquals(list5, list6);
+		setupScenary7();
+		assertArrayEquals(list3, list4);
 
-		float[] list7 = new float[] { 18f, 30f, 29f, 28f, 21f, 4f, 13f, 12f, 11f, 3f, 2f, 19f, 27f, 17f, 16f, 15f, 20f,
-				7f, 6f, 5f, 26f, 25f, 24f, 23f, 22f, 14f, 10f, 9f, 8f, 1f };
-		model.radixSort(list7);
-		float[] list8 = new float[] { 1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f, 9f, 10f, 11f, 12f, 13f, 14f, 15f, 16f, 17f, 18f,
-				19f, 20f, 21f, 22f, 23f, 24f, 25f, 26f, 27f, 28f, 29f, 30f };
-		assertArrayEquals(list7, list8);
+		setupScenary8();
+		assertArrayEquals(list3, list4);
+
+		setupScenary9();
+		assertArrayEquals(list3, list4);
 
 	}
 
