@@ -107,45 +107,82 @@ public class Controller implements Initializable {
 
 		if (file != null) {
 			txtLink.setText(file.getAbsolutePath());
-			if (combTypeNumber.valueProperty().getValue() != null&& !combTypeNumber.valueProperty().getValue().isEmpty()) {
-				
-				char numberType = (combTypeNumber.valueProperty().getValue().equalsIgnoreCase("float"))? Model.INTEGERS: Model.FLOAT;
-			
+			if (combTypeNumber.valueProperty().getValue() != null
+					&& !combTypeNumber.valueProperty().getValue().isEmpty()) {
+
+				char numberType = (combTypeNumber.valueProperty().getValue().equalsIgnoreCase("float")) ? Model.INTEGERS
+						: Model.FLOAT;
+
 				try {
 					model.readNumbersFile(file, numberType);
-					
+
 					String message = "";
-					
-					if(numberType == Model.FLOAT)
-					{
+
+					if (numberType == Model.FLOAT) {
 						for (int i = 0; i < model.getFloatList().length; i++) {
-							message += model.getFloatList()[i]+ " - ";
+							message += model.getFloatList()[i] + " - ";
 						}
-						
-					}else{
+						model.setIntegerList(null);
+					} else {
 						for (int i = 0; i < model.getIntegerList().length; i++) {
-							message += model.getIntegerList()[i]+ " - ";
+							message += model.getIntegerList()[i] + " - ";
 						}
+						model.setFloatList(null);
 					}
 					txtNonSortNumbers.setText(message);
 				} catch (NumberFormatException | FileWithNoSetSizeException | FileWithNotNumbersSet e) {
-					
+
 					JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-					
+
 				} catch (IOException e) {
-					
-					JOptionPane.showMessageDialog(null, "an error appear when we tryed to read your file", "Error", JOptionPane.ERROR_MESSAGE);
-					
-				} 
-			} else
-			{
-				JOptionPane.showMessageDialog(null, "You did not choose a number type ", "Error", JOptionPane.ERROR_MESSAGE);
+
+					JOptionPane.showMessageDialog(null, "an error appear when we tryed to read your file", "Error",
+							JOptionPane.ERROR_MESSAGE);
+
+				}
+			} else {
+				JOptionPane.showMessageDialog(null, "You did not choose a number type ", "Error",
+						JOptionPane.ERROR_MESSAGE);
 			}
-			
-			
-			
+
+		}
+
 	}
 
+	@FXML
+	void toSort(ActionEvent event) {
+
+		if (model.getFloatList() != null) {
+			Object[] performance = model.sortPerformance(Model.FLOAT);
+
+			txtRunTime.setText((long) performance[0] + "");
+			txtAlgorithm.setText((String) performance[1] + "");
+			txtOutputSize.setText(model.getFloatList().length + "");
+
+			String message = "";
+			for (int i = 0; i < model.getFloatSortedlist().length; i++) {
+				message += model.getFloatSortedlist()[i] + " - ";
+			}
+			txtSortedNumbers.setText(message);
+
+			model.setIntegerSortedList(null);
+		}
+
+		if (model.getIntegerList() != null) {
+			Object[] performance = model.sortPerformance(Model.INTEGERS);
+
+			txtRunTime.setText((long) performance[0] + "");
+			txtAlgorithm.setText((String) performance[1] + "");
+			txtOutputSize.setText(model.getFloatList().length + "");
+
+			String message = "";
+			for (int i = 0; i < model.getIntegerSortedList().length; i++) {
+				message += model.getIntegerSortedList()[i] + " - ";
+			}
+			txtSortedNumbers.setText(message);
+
+			model.setFloatSortedList(null);
+		}
 	}
 
 	@Override

@@ -72,7 +72,7 @@ public class Model {
 	/**
 	 * 
 	 */
-	private float[] floatSortedist;
+	private float[] floatSortedList;
 
 	/**
 	 * 
@@ -82,7 +82,7 @@ public class Model {
 	/**
 	 * 
 	 */
-	private int[] integerSortedist;
+	private int[] integerSortedList;
 
 	/**
 	 * Default constructor
@@ -604,24 +604,24 @@ public class Model {
 		switch (numbertype) {
 		case FLOAT:
 			algorithm = RADIX;
-			floatSortedist = floatList.clone();
+			floatSortedList = floatList.clone();
 
-			timeStart = System.currentTimeMillis();
-			radixSort(floatSortedist);
-			runtime = System.currentTimeMillis() - timeStart;
+			timeStart = System.nanoTime();
+			radixSort(floatSortedList);
+			runtime = System.nanoTime()- timeStart;
 			break;
 
 		case INTEGERS:
-			integerSortedist = integerList.clone();
-			if (integerSortedist.length <= 2500) {
+			integerSortedList = integerList.clone();
+			if (integerSortedList.length <= 2500) {
 				algorithm = QUICK_SORT;
 				timeStart = System.currentTimeMillis();
-				quickSort(integerSortedist, integerSortedist.length, 0);
+				quickSort(integerSortedList, integerSortedList.length, 0);
 				runtime = System.currentTimeMillis() - timeStart;
 			} else {
 				algorithm = PIGEONHOLE_SORT;
 				timeStart = System.currentTimeMillis();
-				pigeonHoleSort(integerSortedist);
+				pigeonHoleSort(integerSortedList);
 				runtime = System.currentTimeMillis() - timeStart;
 			}
 			break;
@@ -780,12 +780,12 @@ public class Model {
 		this.floatList = floatList;
 	}
 
-	public float[] getFloatSortedist() {
-		return floatSortedist;
+	public float[] getFloatSortedlist() {
+		return floatSortedList;
 	}
 
-	public void setFloatSortedist(float[] floatSortedist) {
-		this.floatSortedist = floatSortedist;
+	public void setFloatSortedList(float[] floatSortedist) {
+		this.floatSortedList = floatSortedist;
 	}
 
 	public int[] getIntegerList() {
@@ -796,12 +796,12 @@ public class Model {
 		this.integerList = integerList;
 	}
 
-	public int[] getIntegerSortedist() {
-		return integerSortedist;
+	public int[] getIntegerSortedList() {
+		return integerSortedList;
 	}
 
-	public void setIntegerSortedist(int[] integerSortedist) {
-		this.integerSortedist = integerSortedist;
+	public void setIntegerSortedList(int[] integerSortedist) {
+		this.integerSortedList = integerSortedist;
 	}
 
 }
