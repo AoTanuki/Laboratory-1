@@ -305,11 +305,11 @@ public class Controller implements Initializable {
 					if (!(cloneNumber== Model.NO_CLONE_NUMBERS)) {
 						model.generateElements(size, startInterval, endInterval, cloneNumber, generateType, numberType);
 					
-					} else if(!(size < endInterval - startInterval)) {
+					} else if(!(size > endInterval - startInterval)) {
 						model.generateElements(size, startInterval, endInterval, cloneNumber, generateType, numberType);
 					}else
 					{
-						JOptionPane.showMessageDialog(null, "Interval can't be less than size", "error",
+						JOptionPane.showMessageDialog(null, "Interval can't be less than size for no clone generate", "error",
 								JOptionPane.ERROR_MESSAGE);
 						errorAppears = true;
 					}
