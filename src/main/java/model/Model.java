@@ -667,7 +667,7 @@ public class Model {
 		int pivot = list[high];
 		int smallerElementIndex = (low - 1);
 
-		for (int i = low; i < high; i++) {
+		for (int i = low; i < high; i++) { 
 
 			if (list[i] <= pivot) {
 				smallerElementIndex++;
